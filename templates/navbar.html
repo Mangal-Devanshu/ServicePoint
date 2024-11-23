@@ -1,28 +1,28 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-warning border border-dark">
+<nav class="navbar navbar-expand-lg navbar-warning bg-warning border border-black ">
     <div class="container-fluid">
-        <a class="navbar-brand text-dark text-weight-bold" href="#">Service Point</a>
+        <a class="navbar-brand text-dark text-weight-bold  fs-5" href="#">Service Point</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ms-auto ">
+            <ul class="navbar-nav ms-auto fs-6 ">
                 <li class="nav-item">
-                    <a class="nav-link active text-dark " aria-current="page" href="/">Home</a>
+                    <a class="nav-link active text-dark" aria-current="page" href="{{url_for('show_home')}}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/services">Services</a>
+                    <a class="nav-link text-dark" href="{{url_for('service')}}">Services</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Register
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/register">User</a></li>
-                        <li><a class="dropdown-item" href="/register/professional">Service Provider</a></li>
+                    <ul class="dropdown-menu bg-light">
+                        <li><a class="dropdown-item text-dark " href="{{url_for('show_register')}}">User</a></li>
+                        <li><a class="dropdown-item text-dark " href="{{url_for('show_register_professional')}}">Service Provider</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/login">Login</a>
+                    <a class="nav-link text-dark" href="{{url_for('show_login')}}">Login</a>
                 </li>
             </ul>
         </div>
