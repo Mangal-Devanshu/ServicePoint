@@ -4,48 +4,85 @@
     {% endblock %}
     {% block content %}
     <div class="container d-flex justify-content-center align-items-center ">
-        <div class="card" style="width: 45rem; height: 65rem;">
+        <div class="card" style="width: 50rem">
             <div class="card-body">
 
                 <h1 class="display-4 text-dark text-center ">Register Professional</h1>
                 <form class="text-dark py-4" method="post">
+                <h2 class="text-dark">Personal Details</h2>
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username:</label>
+                    <label for="username" class="form-label">Username:<span style="color: red;">*</span></label>
                     <input type="text" class="form-control" id="username" required name="username">
                 </div>
                 <div class="mb-3">
-                    <label for="name" class="form-label">Name:</label> 
+                    <label for="name" class="form-label">Name:<span style="color: red;">*</span></label> 
                     <input type="text" class="form-control" id="name" required name="name">
                 </div>
                     
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email:</label>
+                    <label for="email" class="form-label">Email:<span style="color: red;">*</span></label>
                     <input type="email" class="form-control" id="email" required name="email">
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Password<span style="color: red;">*</span></label>
                     <input type="password" class="form-control" id="password" required name="password">
                 </div>
                 <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <label for="confirmPassword" class="form-label">Confirm Password<span style="color: red;">*</span></label>
                     <input type="password" class="form-control" id="confirmPassword" required name="confirmPassword">
                 </div>
                 <div class="mb-3">
-                    <label for="description" class="form-label">Description:</label>
+                    <label for="description" class="form-label">Description:<span style="color: red;">*</span></label>
                     <textarea class="form-control" id="description" required name="description"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="category" class="form-label">Category:</label>
-                    <select class="form-select" id="category" name="category">
-                        <option value="">Select a category</option>
+                    <label for="category" class="form-label">Category:<span style="color: red;">*</span></label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="" disabled>Select a category</option>
                         {% for category in categories %}
                             <option value="{{ category.id }}">{{ category.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="experience" class="form-label">Experience:</label>
+                    <label for="experience" class="form-label">Experience:<span style="color: red;">*</span></label>
                     <textarea class="form-control" id="experience" required name="experience"></textarea>
+                </div>
+                <div class="mb-3">
+                    <h2 class="text-dark">Service Details</h2>
+                    <p class="text-black-50">Add the details of service you are gonna provide.</p>
+                    <table style="width: 48rem">
+                        <tr>
+                            <tr>
+                                <td>
+                                    <label for="service_name" class="form-label">Service:<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="service_name" required name="service_name">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="service_description" class="form-label pt-2">Description:<span style="color: red;">*</span></label>
+                                    <textarea type="text" class="form-control" id="service_description" required name="service_description">
+                                    </textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="service_price" class="form-label pt-2">Price:<span style="color: red;">*</span></label>
+                                    <p class="text-black-50 fs-6">Enter the price of the service in rupees</p>
+                                    <input type="number" class="form-control" id="price" required name="service_price">
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="service_duration" class="form-label pt-2">Duration:<span style="color: red;">*</span></label>
+                                    <p class="text-black-50 fs-6">Enter the duration of the service in hours</p>
+                                    <input type="number" class="form-control" id="duration" required name="service_duration">
+                                </td>
+                             </tr>
+                        </tr>
+                    </table>
                 </div>
                 <div class="d-flex justify-content-center align-items-center pt-3">
                     <button type="submit" class="btn btn-primary">Submit</button>

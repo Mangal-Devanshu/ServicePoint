@@ -1,4 +1,5 @@
 from app import app
+from flask import session
 from dotenv import load_dotenv
 import os
 

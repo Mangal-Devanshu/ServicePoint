@@ -1,6 +1,7 @@
 from app import app
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy(app)
 
@@ -83,3 +84,9 @@ class Transaction(db.Model):
 
 with app.app_context():
     db.create_all()
+    admin = User.query.filter_by(username='admin').first()
+    if not admin:
+        passhash = generate_password_hash('admin')
+        admin = User(username='admin', passhash=passhash , name='admin', email='admin@example.com')
+        db.session.add(admin)
+        db.session.commit()

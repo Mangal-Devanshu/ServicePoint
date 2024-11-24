@@ -6,23 +6,47 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto fs-6 ">
+                {% if session.logged_in %}
+                    {% if session.user_type=='admin' %}
+                        <li class="nav-item">
+                            <a class="nav-link active text-dark" aria-current="page" href="{{url_for('show_admin')}}">Home</a>
+                        </li>
+                    {% elif session.user_type=='user' %}
+                        <li class="nav-item">
+                            <a class="nav-link active text-dark" aria-current="page" href="{{url_for('show_dashboard_user')}}">Home</a>
+                        </li>
+                    {% elif session.user_type=='service professional' %}
+                        <li class="nav-item">
+                            <a class="nav-link active text-dark" aria-current="page" href="{{url_for('show_dashboard_professional')}}">Home</a>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link active text-dark" aria-current="page" href="{{url_for('show_home')}}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Register
+                        </a>
+                        <ul class="dropdown-menu bg-light">
+                            <li><a class="dropdown-item text-dark " href="{{url_for('show_register')}}">User</a></li>
+                            <li><a class="dropdown-item text-dark " href="{{url_for('show_register_professional')}}">Service Provider</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if session.logged_in %}
                 <li class="nav-item">
-                    <a class="nav-link active text-dark" aria-current="page" href="{{url_for('show_home')}}">Home</a>
+                    <a class="nav-link text-dark" href="{{url_for('show_profile')}}">Profile</a>
                 </li>
+                {% endif %}     
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="{{url_for('service')}}">Services</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Register
-                    </a>
-                    <ul class="dropdown-menu bg-light">
-                        <li><a class="dropdown-item text-dark " href="{{url_for('show_register')}}">User</a></li>
-                        <li><a class="dropdown-item text-dark " href="{{url_for('show_register_professional')}}">Service Provider</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
+                    {% if session.logged_in %}
+                    <a class="nav-link text-danger fw-semibold" href="{{url_for('show_logout')}}">Logout</a>
+                    {% else %}
                     <a class="nav-link text-dark" href="{{url_for('show_login')}}">Login</a>
+                    {% endif %}
+
                 </li>
             </ul>
         </div>
