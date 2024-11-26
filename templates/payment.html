@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Payment
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="display-4 text-center text-dark">Payment Portal</h1>
+    <div class="mt-4">
+        <div class="card mb-12 border border-black mx-auto" style="width: 18rem;">
+            <div class="card-header border-bottom border-black">
+                <h2 class="text-center">Payment</h2>
+            </div>
+            <div class="card-body bg-warning">
+                <form method="POST">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="card mx-2 border border-black">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="Total Bill" class="form-label fw-bold">Total Bill:</label>
+                                    <label for="Total Bill" class="form-label ">{{transaction.price}} Rs.</label>
+                                    
+                                </div>
+                                <div class="mb-3">
+                                    <label for="amount" class="form-label fw-bold">Enter Amount:</label>
+                                    <input type="number" id="amount" name="amount" class="form-control" placeholder="Amount" required>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-success border border-black">Payment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}     

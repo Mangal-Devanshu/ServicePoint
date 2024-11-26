@@ -1,1 +1,50 @@
 {% extends 'layout.html' %}
+{% block title %}
+    Home
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="mt-4">
+            <h1 class="display-4 text-center text-dark my-4">Welcome to Service Point</h1>
+            <div class="card mb-4 border border-black">
+                <div class="card-header border-bottom border-black">
+                    <h2>Service Categories</h2>
+                </div>
+                <div class="card-body bg-warning">
+                    <div class="row">
+                        {% for category in category %}
+                        <div class="col-md-12 mb-4">
+                            <div class="card border border-black">
+                                <div class="card-header border-bottom border-black">
+                                    <h4>{{ category.name }}</h4>
+                                </div>
+                                <div class="card-body ">
+                                    <div class="d-flex flex-row flex-wrap">
+                                        {% for service in category.services %}
+                                        <div class="card mx-3 my-3 " style="width: 22rem;">
+                                            <div class="card-body border border-black rounded-1">
+                                                <div class="card-header mb-4 border rounded-1 border-black d-flex " style="background-color: hsla(0, 0%, 88%, 0.749);">
+                                                    <img src="https://api.dicebear.com/9.x/lorelei/svg?seed={{service.service_professional.name}}" class="rounded-circle border border-black bg-white" alt="..." style="width: 50px; height: 50px;">
+                                                    <div class="mx-2">
+                                                        <p class="card-text mt-2 fs-5 mx-2 fw-semibold">{{ service.service_professional.name }}</p>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <h5 class="card-title fs-4"><u>{{ service.name }}</u></h5>
+                                                <p class="card-text">{{ service.description }}</p>
+                                                <p class="card-text">Price: {{ service.price }} Rs.</p>
+                                                <p class="card-text">Duration: {{ service.time }} Hrs</p>
+                                                <a href="{{ url_for('show_book_professional', id=service.id) }}" class="btn btn-primary float-end">View</a>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

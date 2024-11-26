@@ -1,1 +1,115 @@
 {% extends 'layout.html' %}
+{% block title %}
+    Dashboard
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="display-4 text-center text-dark">Dashboard</h1>
+        <div class="mt-4">
+            <div class="card mb-4 border border-black">
+                <div class="card-header border-bottom border-black">
+                    <h2>Your Service Requests</h2>
+                </div>
+                <div class="card-body bg-warning ">
+                    <div class="table-responsive">
+                        <table class="table table-striped border border-black">
+                            <thead class="thead-dark">
+                                <tr class="text-center align-middle">
+                                    <th scope="col" class="px-3">User Name</th>
+                                    <th scope="col" class="px-3">User Email</th>
+                                    <th scope="col" class="px-3">User Address</th>
+                                    <th scope="col" class="px-3">Appointment Date</th>
+                                    <th scope="col" class="px-3">Created At</th>
+                                    <th scope="col" class="px-3">Status</th>
+                                    <th scope="col" class="px-3">Payment Status</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                {% for service_request in service_requests %}
+                                    <tr class="text-center align-middle">
+                                        <td>{{ service_request.user.name }}</td>
+                                        <td>{{ service_request.user.email }}</td>
+                                        <td>{{ service_request.address }}</td>
+                                        <td>{{ service_request.appointment }}</td>
+                                        <td>{{ service_request.created_at }}</td>
+                                        <td>
+                                            <!-- select status -->
+                                           <form action="{{ url_for('handle_dashboard_professional', id=service_request.id) }}" method="POST">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <select name="status" class="form-select border border-black" required>
+                                                    <option value="pending" {% if service_request.status == 'pending' %}selected{% endif %}>Pending</option>
+                                                    <option value="approved" {% if service_request.status == 'approved' %}selected{% endif %}>Approved</option>
+                                                    <option value="completed" {% if service_request.status == 'completed' %}selected{% endif %}>Completed</option>
+                                                    <option value="canceled" {% if service_request.status == 'canceled' %}selected{% endif %}>Canceled</option>
+                                                </select>
+                                                
+                                                    <label for="OTP">Enter OTP:</label>
+                                                    <input type="text" name="OTP" id="OTP" class="form-control">
+                                                    <button type="submit" class="btn btn-success border border-black">Update</button>
+                                            </div> 
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="badge py-2 px-2 mx-auto
+                                                    {% if service_request.payment_status == 'pending' %}bg-warning
+                                                    {% elif service_request.payment_status == 'released' %}bg-success
+                                                    {% elif service_request.payment_status == 'refunded' %}bg-primary
+                                                    {% elif service_request.payment_status == 'held' %}bg-danger
+                                                    {% endif %}">
+                                                    {{ service_request.payment_status }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4 border border-black mt-6">
+                <div class="card-header border-bottom border-black">
+                    <h2>Your Transaction History</h2>
+                </div>
+                <div class="card-body bg-warning ">
+                    <div class="table-responsive rounded-2">
+                        <table class="table table-striped rounded-2">
+                            <thead class="thead-dark border border-black rounded-2">
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Service Request ID</th>
+                                    <th>Service Request Name</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="border border-black rounded-2">
+                                {% for transaction in transactions %}
+                                    <tr>
+                                        <td>{{ transaction.id }}</td>
+                                        <td>{{ transaction.date }}</td>
+                                        <td>{{ transaction.price }}</td>
+                                        <td>{{ transaction.service_request.id }}</td>
+                                        <td>{{ transaction.service_request.service.name }}</td>
+                                        <td>
+                                            <span class="badge py-2 px-2
+                                                {% if transaction.status == 'pending' %}text-bg-warning{% endif %}
+                                                {% if transaction.status == 'refunded' %}text-bg-primary{% endif %}
+                                                {% if transaction.status == 'completed' %}text-bg-success{% endif %}
+                                                {% if transaction.status == 'failed' %}text-bg-danger{% endif %}
+                                            ">
+                                                {{ transaction.status }}
+                                            </span>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

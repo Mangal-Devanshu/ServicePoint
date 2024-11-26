@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% block Title %}
+    Book Service
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="mt-4">
+            <a href="{{ url_for('show_book_professional',id=service.id) }}" class="btn btn-primary border border-black">Back</a>  
+        </div>             
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card mt-4 border border-black rounded-2">
+                    <div class="card-header border-bottom border-black">
+                        <h1>Book Service</h1>
+                    </div>
+                    <div class="card-body bg-warning ">
+                        <form method="post">    
+                            <div class="form-group mb-3">
+                                <label for="time">Time</label>
+                                <input type="time" class="form-control border border-black" id="time" name="time" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="date">Date</label>
+                                <input type="date" class="form-control border border-black" id="date" name="date" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="address">Address</label>
+                                <textarea type="text" class="form-control border border-black" id="address" name="address" required></textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-success border border-1 border-black">Book Service</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

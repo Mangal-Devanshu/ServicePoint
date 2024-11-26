@@ -8,8 +8,8 @@
             <div class="col-lg-10">
                 <div class="card">
                     <div class="card-header border border-black text-center d-flex justify-content-between align-items-center">
-                        <h2 class="mb-0">Professional Details</h2>
-
+                        <h2 class="mb-0">Book Professional</h2>
+                        <a href="{{ url_for('handle_book',id=service.id) }}" class="btn btn-success border border-black">Book</a>
                     </div>
                     <div class="card-body border border-black bg-warning">
                         <div class="row d-flex align-items-stretch">
@@ -26,11 +26,9 @@
                                                  alt="Professional Image" 
                                                  style="width: 100px; height: 100px;">
                                             <div class="mx-4">
-                                                
                                                 <p class="fs-5 my-1"><u>{{ professional.username }}</u></p>
                                                 <p><strong>Name:</strong> {{ professional.name }}</p>
                                                 <p><strong>Email:</strong> {{ professional.email }}</p>
-                                                <p><strong>ID:</strong> {{ professional.id }}</p>
                                             </div>
                                         </div>
                                         <p><strong>Description:</strong> {{ professional.description }}</p>
