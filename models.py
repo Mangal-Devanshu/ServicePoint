@@ -14,6 +14,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     service_requests = db.relationship('ServiceRequest', backref='user', lazy=True)
     transactions = db.relationship('Transaction', backref='user', lazy=True)
+    reviews = db.relationship('Review', backref='user', lazy=True)
 
 class ServiceProfessional(db.Model):
     id = db.Column(db.Integer, primary_key=True)

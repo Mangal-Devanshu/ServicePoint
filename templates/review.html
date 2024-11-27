@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Review
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="mt-4">
+            <a href="{{ url_for('show_dashboard_user') }}" class="btn btn-primary border border-black">Back</a>
+        </div>             
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6 col-lg-4">
+                <div class="card mt-4 border border-black rounded-3">
+                    <div class="card-header text-center border-bottom border-black">
+                        <h3 class="mb-0">Submit Your Review</h3>
+                    </div>
+                    <div class="card-body bg-warning">
+                        <div class="card border border-black">
+                            <div class="card-body">
+
+                                <form method="post">
+                                    <!-- Rating Section -->
+                                    <div class="form-group mb-3">
+                                        <label for="rating" class="form-label fs-5 ">Rating</label>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <input type="radio" class="btn-check" name="rating" id="star5" value="1" autocomplete="off">
+                                            <label class="btn btn-outline-warning border border-black mx-1" for="star5">1 Stars</label>
+                                            
+                                            <input type="radio" class="btn-check" name="rating" id="star4" value="2" autocomplete="off">
+                                            <label class="btn btn-outline-warning border border-black mx-1" for="star4">2 Stars</label>
+                                            
+                                            <input type="radio" class="btn-check" name="rating" id="star3" value="3" autocomplete="off">
+                                            <label class="btn btn-outline-warning border border-black mx-1" for="star3">3 Stars</label>
+                                            
+                                            <input type="radio" class="btn-check" name="rating" id="star2" value="4" autocomplete="off">
+                                            <label class="btn btn-outline-warning border border-black mx-1" for="star2">4 Stars</label>
+                                            
+                                            <input type="radio" class="btn-check" name="rating" id="star1" value="5" autocomplete="off">
+                                            <label class="btn btn-outline-warning border border-black mx-1" for="star1">5 Star</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Review Section -->
+                                    <div class="form-group mb-4">
+                                        <label for="review" class="form-label fs-5">Your Review</label>
+                                        <textarea class="form-control border border-black" id="review"  rows="4" name="review" required placeholder="Write your review here..."></textarea>
+                                    </div>
+        
+                                    <!-- Submit Button -->
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-success border border-1 border-black px-4">Submit</button>
+                                    </div>
+                                </form>
+                                
+                            <div>
+                        </div>
+                        
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+{% endblock %}

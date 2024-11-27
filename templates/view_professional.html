@@ -69,11 +69,11 @@
                                                     <div class="card-header border-bottom border-black d-flex align-items-center justify-content-between">
                                                         <!-- Profile Picture and Name -->
                                                         <div class="d-flex align-items-center">
-                                                            <img src="https://api.dicebear.com/9.x/lorelei/svg?seed={{ review.reviewer_name }}" 
+                                                            <img src="https://api.dicebear.com/9.x/lorelei/svg?seed={{ review.user.name }}" 
                                                                  class="rounded-circle border border-black me-3" 
                                                                  alt="Reviewer Image" 
                                                                  style="width: 50px; height: 50px;">
-                                                            <h5 class="mb-0"><strong>{{ review.reviewer_name }}</strong></h5>
+                                                            <h5 class="mb-0"><strong>{{ review.user.name }}</strong></h5>
                                                         </div>
                                                         
                                                         <!-- Star Rating -->
@@ -86,57 +86,12 @@
                                                     
                                                     <!-- Review Content -->
                                                     <div class="card-body">
-                                                        <p><strong>Comment:</strong> {{ review.comment }}</p>
+                                                        <p><strong>Comment:</strong> {{ review.description}}</p>
+                                                        <p class="text-black-50 float-end"style="font-size:13px;"> {{ review.created_at }}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             {% endfor %}
-                                        <div class="col-md-6 mb-4">
-                                            <div class="card border border-black">
-                                                <div class="card-header border-bottom border-black d-flex align-items-center justify-content-between mb-3">
-                                                    <!-- Profile Picture -->
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="https://api.dicebear.com/9.x/lorelei/svg?seed=23" 
-                                                            class="rounded-circle border border-black me-3" 
-                                                            alt="Reviewer Image" 
-                                                            style="width: 50px; height: 50px;">
-                                                        <!-- Reviewer Name -->
-                                                        <h5 class="mb-0 "><strong>DaduBhai</strong></h5>
-                                                    </div>
-                                                    <div class="rating d-flex align-items-center me-">
-                                                        {% for star in range(1, 6) %}
-                                                        <i class="fas {% if star <= 5 %}fa-star{% else %}fa-star-o{% endif %} text-warning me-1"></i>
-                                                        {% endfor %}
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p><strong>Comment:</strong> Superb Service</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-4">
-                                            <div class="card border border-black">
-                                                <div class="card-header border-bottom border-black d-flex align-items-center justify-content-between mb-3">
-                                                    <!-- Profile Picture -->
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="https://api.dicebear.com/9.x/lorelei/svg?seed=23" 
-                                                            class="rounded-circle border border-black me-3" 
-                                                            alt="Reviewer Image" 
-                                                            style="width: 50px; height: 50px;">
-                                                        <!-- Reviewer Name -->
-                                                        <h5 class="mb-0 "><strong>DaduBhai</strong></h5>
-                                                    </div>
-                                                    <div class="rating d-flex align-items-center me-">
-                                                        {% for star in range(1, 6) %}
-                                                        <i class="fas {% if star <= 3 %}fa-star{% else %}fa-star-o{% endif %} text-warning me-1"></i>
-                                                        {% endfor %}
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <p><strong>Comment:</strong> Superb Service</p>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

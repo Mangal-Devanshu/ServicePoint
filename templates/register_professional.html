@@ -1,104 +1,102 @@
-    {% extends 'layout.html' %}
-    {% block title %}
-        Register Professional
-    {% endblock %}
-    {% block content %}
-    <div class="container d-flex justify-content-center align-items-center ">
-        <div class="card" style="width: 50rem">
-            <div class="card-body">
-
-                <h1 class="display-4 text-dark text-center ">Register Professional</h1>
-                <form class="text-dark py-4" method="post">
-                <h2 class="text-dark">Personal Details</h2>
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username:<span style="color: red;">*</span></label>
-                    <input type="text" class="form-control" id="username" required name="username">
-                </div>
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name:<span style="color: red;">*</span></label> 
-                    <input type="text" class="form-control" id="name" required name="name">
-                </div>
-                    
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email:<span style="color: red;">*</span></label>
-                    <input type="email" class="form-control" id="email" required name="email">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password<span style="color: red;">*</span></label>
-                    <input type="password" class="form-control" id="password" required name="password">
-                </div>
-                <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirm Password<span style="color: red;">*</span></label>
-                    <input type="password" class="form-control" id="confirmPassword" required name="confirmPassword">
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description:<span style="color: red;">*</span></label>
-                    <textarea class="form-control" id="description" required name="description"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="category" class="form-label">Category:<span style="color: red;">*</span></label>
-                    <select class="form-select" id="category" name="category" required>
-                        <option value="" disabled>Select a category</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="experience" class="form-label">Experience:<span style="color: red;">*</span></label>
-                    <textarea class="form-control" id="experience" required name="experience"></textarea>
-                </div>
-                <div class="mb-3">
-                    <h2 class="text-dark">Service Details</h2>
-                    <p class="text-black-50">Add the details of service you are gonna provide.</p>
-                    <table style="width: 48rem">
-                        <tr>
-                            <tr>
-                                <td>
-                                    <label for="service_name" class="form-label">Service:<span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" id="service_name" required name="service_name">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="service_description" class="form-label pt-2">Description:<span style="color: red;">*</span></label>
-                                    <textarea type="text" class="form-control" id="service_description" required name="service_description">
-                                    </textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="service_price" class="form-label pt-2">Price:<span style="color: red;">*</span></label>
-                                    <p class="text-black-50 fs-6">Enter the price of the service in rupees</p>
-                                    <input type="number" class="form-control" id="price" required name="service_price">
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="service_duration" class="form-label pt-2">Duration:<span style="color: red;">*</span></label>
-                                    <p class="text-black-50 fs-6">Enter the duration of the service in hours</p>
-                                    <input type="number" class="form-control" id="duration" required name="service_duration">
-                                </td>
-                             </tr>
-                        </tr>
-                    </table>
-                </div>
-                <div class="d-flex justify-content-center align-items-center pt-3">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+{% extends 'layout.html' %}
+{% block title %}
+    Register Professional
+{% endblock %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center ">
+    <div class="card mb-4 border border-black mt-4" style="width: 50rem">
+        <div class="card-header border-bottom border-black">
+            <h1 class="fs-2 text-dark text-center">Register Professional</h1>
+        </div>
+        <div class="card-body bg-warning">
+            <div class="card border border-black">
+                <div class="card-header bg-light border-bottom border-dark">
+                    <h3 class="fs-5 text-center">Professional Details</h3>
                 </div>
 
-                <div class="d-flex justify-content-center align-items-center">
-                    <a href="{{url_for('show_login')}}" class="btn btn-link text-primary pt-4 fs-6 ">Already have an account? Login</a>  
+                <div class="card-body">
+                    <form class="text-dark py-3" method="post">
+                        <h2 class="text-dark">Personal Details</h2>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username:<span style="color: red;">*</span></label>
+                            <input type="text" class="form-control border border-black" id="username" required name="username" placeholder="Enter username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name:<span style="color: red;">*</span></label> 
+                            <input type="text" class="form-control border border-black" id="name" required name="name" placeholder="Enter name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:<span style="color: red;">*</span></label>
+                            <input type="email" class="form-control border border-black" id="email" required name="email" placeholder="Enter email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password:<span style="color: red;">*</span></label>
+                            <input type="password" class="form-control border border-black" id="password" required name="password"  placeholder="Enter password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password:<span style="color: red;">*</span></label>
+                            <input type="password" class="form-control border border-black" id="confirmPassword" required name="confirmPassword" placeholder="Confirm password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description:<span style="color: red;">*</span></label>
+                            <textarea class="form-control border border-black" id="description" required name="description" placeholder="Enter description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category:<span style="color: red;">*</span></label>
+                            <select class="form-select border border-black" id="category" name="category" required>
+                                <option value="" disabled>Select a category</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="experience" class="form-label">Experience:<span style="color: red;">*</span></label>
+                            <textarea class="form-control border border-black" id="experience" required name="experience" placeholder="Enter experience"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <h2 class="text-dark">Service Details</h2>
+                            <p class="text-black-50">Add the details of the service you are going to provide.</p>
+                            <table style="width: 46rem;">
+                                <tr>
+                                    <td>
+                                        <label for="service_name" class="form-label">Service:<span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control border border-black" id="service_name" required name="service_name" placeholder="Enter service name">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="service_description" class="form-label pt-2">Description:<span style="color: red;">*</span></label>
+                                        <textarea class="form-control border border-black" id="service_description" required name="service_description" placeholder="Enter service description"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="service_price" class="form-label pt-2">Price:<span style="color: red;">*</span></label>
+                                        <p class="text-black-50 fs-6">Enter the price of the service in rupees</p>
+                                        <input type="number" class="form-control border border-black" id="price" required name="service_price" placeholder="Enter price">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="service_duration" class="form-label pt-2">Duration:<span style="color: red;">*</span></label>
+                                        <p class="text-black-50 fs-6">Enter the duration of the service in hours</p>
+                                        <input type="number" class="form-control border border-black" id="duration" required name="service_duration" placeholder="Enter duration">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center mt-4">
+                            <a href="{{url_for('show_login')}}" class="btn btn-link text-black  fs-6">Already have an account? Login</a>
+                            <a href="{{url_for('show_register')}}" class="btn btn-link text-black fs-6">Register as user?</a>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center pt-3">
+                            <button type="submit" class="btn btn-primary border border-black">Submit</button>
+                        </div>
+                    </form>
                 </div>
-
-                <div class="d-flex justify-content-center align-items-center">
-                    <a href="{{url_for('show_register')}}" class="btn btn-link text-primary fs-6  ">Register as user</a>
-                </div>
-                
-                </form>
-
             </div>
         </div>
     </div>
-    {% endblock %}
+</div>
+{% endblock %}

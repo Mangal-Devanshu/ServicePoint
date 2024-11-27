@@ -1,6 +1,6 @@
 from app import app
 from flask import render_template,request,redirect,url_for,flash,session
-from models import User,db,ServiceProfessional,Category,Service,ServiceRequest,Transaction
+from models import User,db,ServiceProfessional,Category,Service,ServiceRequest,Transaction,Review
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from datetime import datetime
@@ -69,7 +69,10 @@ def show_book_professional(id):
     print("Book page requested")
     service=Service.query.get(id)
     professional=ServiceProfessional.query.get(service.service_professional_id)
-    return render_template("book_professional.html",service=service,professional=professional)
+    print(service.id)
+    reviews=Review.query.filter_by(service_id=id).all()
+    print(reviews)
+    return render_template("book_professional.html",service=service,professional=professional,reviews=reviews)
 
 @app.route('/book/<int:id>')
 @login_required
@@ -108,7 +111,7 @@ def handle_book(id):
     db.session.add(transaction)
     db.session.commit()
     flash("Service booked successfully")
-    return redirect(url_for('show_home'))
+    return redirect(url_for('show_payment',id=transaction.id,service_request_id=service_request.id))
 
 
 @app.route('/logout')
@@ -169,7 +172,7 @@ def handle_login():
         session['logged_in']= True
         session['user_type']="user"
         session['user'] = username
-        return redirect(url_for('show_dashboard_user'))
+        return redirect(url_for('show_home'))
     elif role=="service professional":
         user = ServiceProfessional.query.filter_by(username=username).first()
         session['logged_in']= True
@@ -387,7 +390,7 @@ def show_dashboard_user():
 @professional_required
 def show_dashboard_professional():
     print("Professional dashboard requested")
-    professional=ServiceProfessional.query.filter_by(username=session['user']).first()
+    professional=ServiceProfessional.query.filter_by(username=session['user']).first()  
     service=Service.query.filter_by(service_professional_id=professional.id).first()    
     service_requests=ServiceRequest.query.filter_by(service_professional_id=professional.id).all()
     transaction=Transaction.query.filter_by(service_professional_id=professional.id).all()
@@ -525,7 +528,9 @@ def show_professional(id):
     print("Professional page requested")
     professional=ServiceProfessional.query.get(id)
     services=Service.query.filter_by(service_professional_id=id).first()
-    return render_template("view_professional.html",professional=professional,service=services)
+    reviews=Review.query.filter_by(service_id=services.id).all()
+    print(reviews)
+    return render_template("view_professional.html",professional=professional,service=services,reviews=reviews)
 
 @app.route('/professional/<int:id>/delete')
 @login_required
@@ -604,36 +609,66 @@ def show_otp(id):
     return redirect(url_for('show_dashboard_user'))
         
 
-@app.route('/payment/<int:id>')
+@app.route('/payment/<int:id>/<int:service_request_id>')
 @login_required
 @user_required
-def show_payment(id):
+def show_payment(id,service_request_id):
     print("Payment page requested")
     transaction=Transaction.query.get(id)
-    return render_template("payment.html",transaction=transaction)
+    print(transaction)
+    return render_template("payment.html",transaction=transaction,service_request_id=service_request_id)
 
-@app.route('/payment/<int:id>',methods=['POST'])
+@app.route('/payment/<int:id>/<int:service_request_id>',methods=['POST'])
 @login_required
 @user_required
-def handle_payment(id):
+def handle_payment(id,service_request_id):
     print("Payment form submitted")
     transaction=Transaction.query.get(id)
+    service_request=ServiceRequest.query.get(service_request_id)
     Amount=request.form.get('amount')
     if Amount=="":
         flash("Please enter amount")
-        return redirect(url_for('show_payment',id=id))
+        return redirect(url_for('show_payment',id=id,service_request_id=service_request_id))
     transaction_Amount=transaction.price
-    if float(Amount)!=transaction_Amount:
+    if float(Amount)==transaction_Amount:
+        transaction.status="pending"
+        transaction.service_request.payment_status="held"
+        db.session.commit()
+        flash("Payment successful! your money is held with us")
+        return redirect(url_for('show_dashboard_user'))
+    else:
         flash("Amount entered is not the actual amount")
         flash("Payment failed")
-        transaction.status="failed"
+        db.session.delete(transaction)
+        db.session.delete(service_request)
         db.session.commit()
-        return redirect(url_for('show_payment',id=id))
-    transaction.status="pending"
-    transaction.service_request.payment_status="held"
+        return redirect(url_for('show_book',id=service_request.service_id)) 
+    
+@app.route('/review/<int:id>')
+@login_required
+@user_required
+def add_review(id):
+    print("Review page requested")
+    service=Service.query.get(id)
+    return render_template("review.html",service=service)
+
+@app.route('/review/<int:id>',methods=['POST'])
+@login_required
+@user_required
+def handle_review(id):
+    print("Review form submitted")
+    service=Service.query.get(id)
+    description=request.form.get('review')
+    rating=request.form.get('rating')
+    print(description,rating)
+    if description=="" or rating=="":
+        flash("Please enter both description and rating")
+        return redirect(url_for('add_review',id=service.id))
+    review=Review(service_id=service.id,user_id=User.query.filter_by(username=session['user']).first().id,description=description,rating=rating)
+    db.session.add(review)
     db.session.commit()
-    flash("Payment successful! your money is held with us")
-    return redirect(url_for('show_dashboard_user'))
+    flash("Review added successfully")
+    return redirect(url_for('show_home'))
 
 
 

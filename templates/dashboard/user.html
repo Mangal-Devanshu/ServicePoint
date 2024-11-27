@@ -24,6 +24,7 @@
                                     <th>Status</th>
                                     <th>Payment Status</th>
                                     <th>OTP</th>
+                                    <th>Add Review</th>
                                 </tr>
                             </thead>
                             <tbody class="border border-black rounded-2">
@@ -53,11 +54,6 @@
                                                     {% if service_request.payment_status == 'held' %}text-bg-danger{% endif %}">
                                                     {{ service_request.payment_status }}
                                                 </span>
-                                                {% if service_request.payment_status == 'pending' %}
-                                                    <a href="{{ url_for('show_payment', id=service_request.transactions.id) }}" class="btn btn-success btn-sm border border-black py-1 px-3">
-                                                        Pay
-                                                    </a>
-                                                {% endif %}
                                             </div>
                                         </td>
                                         <td>
@@ -67,10 +63,13 @@
                                                     <input type="password" id="password" name="password" class="form-control form-control-sm me-2" placeholder="Enter password" required>
                                                     <button type="submit" class="btn btn-primary btn-sm">View</button>
                                                 </form>
-                                            </div>
+                                            </div>  
                                         </td>
-                                        
+                                        <td>
+                                            <a href="{{ url_for('add_review', id=service_request.service.id) }}" class="btn btn-primary">Add Review</a>
+                                        </td>
                                     </tr>
+
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -107,9 +106,9 @@
                                         <td>
                                             <span class="badge py-2 px-2
                                                 {% if transaction.status == 'pending' %}text-bg-warning{% endif %}
-                                                {% if transaction.status == 'approved' %}text-bg-primary{% endif %}
+                                                {% if transaction.status == 'refunded' %}text-bg-primary{% endif %}
                                                 {% if transaction.status == 'completed' %}text-bg-success{% endif %}
-                                                {% if transaction.status == 'canceled' %}text-bg-danger{% endif %}
+                                                {% if transaction.status == 'failed' %}text-bg-danger{% endif %}
                                             ">
                                                 {{ transaction.status }}
                                             </span>
