@@ -12,6 +12,7 @@ class User(db.Model):
     name = db.Column(db.String(64), nullable=True)
     email = db.Column(db.String(128), unique=True, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    blocked = db.Column(db.Boolean, nullable=False, default=False)
     service_requests = db.relationship('ServiceRequest', backref='user', lazy=True)
     transactions = db.relationship('Transaction', backref='user', lazy=True)
     reviews = db.relationship('Review', backref='user', lazy=True)
@@ -27,12 +28,15 @@ class ServiceProfessional(db.Model):
     experience = db.Column(db.Integer, nullable=False)
     username = db.Column(db.String(32), unique=True, nullable=False)
     passhash = db.Column(db.String(256), nullable=False)
+    approved = db.Column(db.Boolean, nullable=False, default=False)
+    blocked = db.Column(db.Boolean, nullable=False, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     transactions = db.relationship('Transaction', backref='service_professional', lazy=True)
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True)
+    base_price = db.Column(db.Float)
     services = db.relationship('Service', backref='category', lazy=True)
 
 class Service(db.Model):
@@ -43,6 +47,7 @@ class Service(db.Model):
     description = db.Column(db.String(256), nullable=True)
     price = db.Column(db.Float, nullable=False)
     time = db.Column(db.Integer, nullable=False)
+    area_pincode = db.Column(db.String(6), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     reviews = db.relationship('Review', backref='service', lazy=True)
     service_requests = db.relationship('ServiceRequest', backref='service', lazy=True)
@@ -61,6 +66,7 @@ class ServiceRequest(db.Model):
     )
     otp = db.Column(db.String(6), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    completed_at = db.Column(db.DateTime, nullable=True)
     transactions = db.relationship('Transaction', backref='service_request', lazy=True, uselist=False)
     payment_status = db.Column(
         db.Enum('pending', 'held', 'released', 'refunded', name='payment_status'),

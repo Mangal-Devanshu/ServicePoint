@@ -1,0 +1,175 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    User Details
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card border border-black mx-auto mt-5" style="width: 80rem;">
+            <div class="card-header border-bottom border-dark">
+                <h2 class="fs-3 text-center">User Details</h2>
+            </div>
+            <div class="card-body bg-warning">
+            
+                <div class="card border border-black mb-3">
+                    <div class="card-header bg-light border-bottom border-dark">
+                        <h3 class="fs-5 text-center">User Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered border border-black">
+                            <tr>
+                                <td class="fw-bold" style="width: 25%;">ID</td>
+                                <td style="width: 75%;">{{ user.id }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold" style="width: 25%;">Name</td>
+                                <td style="width: 75%;">{{ user.name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold" style="width: 25%;">Email</td>
+                                <td style="width: 75%;">{{ user.email }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold" style="width: 25%;">Number of Service Requests</td>
+                                <td style="width: 75%;">{{ user.service_requests|length }}</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold" style="width: 25%;">Number of Service Reviews</td>
+                                <td style="width: 75%;">{{ user.service_reviews|length }}</td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card border border-black mb-3">
+                    <div class="card-header bg-light border-bottom border-dark">
+                        <h3 class="fs-5 text-center">Service Request Info:</h3>
+                    </div>
+                    <div class="card-body">
+                        {% for service_request in user.service_requests %}
+                            <table class="table table-bordered border border-black">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Service Name</th>
+                                        <th>Service Description</th>
+                                        <th>Service Category</th>
+                                        <th>Service Address (Location)</th>
+                                        <th>Scheduled Appointment</th>
+                                        <th>Status</th>
+                                        <th>Payment Status</th>
+                                        <th>Completed At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ service_request.id }}</td>
+                                        <td>{{ service_request.service.name }}</td>
+                                        <td>{{ service_request.service.description }}</td>
+                                        <td>{{ service_request.service.category.name }}</td>
+                                        <td>{{ service_request.address }}</td>
+                                        <td>{{ service_request.appointment }}</td>
+
+                                        <td>
+                                            <span class="badge py-2 px-2 border-black border
+                                                {% if service_request.status == 'pending' %}text-bg-warning{% endif %}
+                                                {% if service_request.status == 'approved' %}text-bg-success{% endif %}
+                                                {% if service_request.status == 'completed' %}text-bg-primary{% endif %}
+                                                {% if service_request.status == 'canceled' %}text-bg-danger{% endif %}
+                                            ">
+                                                {{ service_request.status }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge py-2 px-2 border-black border
+                                                {% if service_request.payment_status == 'pending' %}text-bg-warning{% endif %}
+                                                {% if service_request.payment_status == 'released' %}text-bg-success{% endif %}
+                                                {% if service_request.payment_status == 'refunded' %}text-bg-primary{% endif %}
+                                                {% if service_request.payment_status == 'held' %}text-bg-danger{% endif %}
+                                            ">
+                                                {{ service_request.payment_status }}
+                                            </span>
+                                        </td>
+                                        <td>{{ service_request.completed_at }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="card border border-black mb-3">
+                    <div class="card-header bg-light border-bottom border-dark">
+                        <h3 class="fs-5 text-center">User Transactions</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered border border-black">
+                           <thead class="thead-dark">
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Service Request ID</th>
+                                    <th>Service Request Name</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in user.transactions %}
+                                    <tr>
+                                        <td>{{ transaction.id }}</td>
+                                        <td>{{ transaction.date }}</td>
+                                        <td>{{ transaction.price }}</td>
+                                        <td>{{ transaction.service_request.id }}</td>
+                                        <td>{{ transaction.service_request.service.name }}</td>
+                                        <td>
+                                            <span class="badge py-2 px-2 border border-black
+                                                {% if transaction.status == 'pending' %}text-bg-warning{% endif %}
+                                                {% if transaction.status == 'refunded' %}text-bg-primary{% endif %}
+                                                {% if transaction.status == 'completed' %}text-bg-success{% endif %}
+                                                {% if transaction.status == 'failed' %}text-bg-danger{% endif %}
+                                            ">
+                                                {{ transaction.status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card border border-black mb-3">
+                    <div class="card-header bg-light border-bottom border-dark">
+                        <h3 class="fs-5 text-center">User Reviews</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered border border-black">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Review ID</th>
+                                    <th>Service Name</th>
+                                    <th>Rating</th>
+                                    <th>Review</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for review in user.reviews %}
+                                    <tr>
+                                        <td>{{ review.id }}</td>
+                                        <td>{{ review.service.name }}</td>
+                                        <td>{{ review.rating }}</td>
+                                        <td>{{ review.description }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}    

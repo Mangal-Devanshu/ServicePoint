@@ -46,7 +46,7 @@
                             <select class="form-select border border-black" id="category" name="category" required>
                                 <option value="" disabled>Select a category</option>
                                 {% for category in categories %}
-                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                <option value="{{ category.id }}">{{ category.name }} -  (Base Price:- {{ category.base_price }})</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -66,6 +66,10 @@
                                 </tr>
                                 <tr>
                                     <td>
+                                        <label for="service_area_pincode" class="form-label pt-2">Pincode:<span style="color: red;">*</span></label>
+                                        <input type="number" class="form-control border border-black" id="service_area_pincode" required name="service_area_pincode" placeholder="Enter pincode"> 
+                                <tr>
+                                    <td>
                                         <label for="service_description" class="form-label pt-2">Description:<span style="color: red;">*</span></label>
                                         <textarea class="form-control border border-black" id="service_description" required name="service_description" placeholder="Enter service description"></textarea>
                                     </td>
@@ -74,7 +78,7 @@
                                     <td>
                                         <label for="service_price" class="form-label pt-2">Price:<span style="color: red;">*</span></label>
                                         <p class="text-black-50 fs-6">Enter the price of the service in rupees</p>
-                                        <input type="number" class="form-control border border-black" id="price" required name="service_price" placeholder="Enter price">
+                                        <input type="number" class="form-control border border-black" id="price" required name="service_price" placeholder="Price should be greater than or equal to the base price">
                                     </td>
                                 </tr>
                                 <tr>

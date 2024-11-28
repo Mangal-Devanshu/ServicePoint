@@ -69,18 +69,61 @@ def show_book_professional(id):
     print("Book page requested")
     service=Service.query.get(id)
     professional=ServiceProfessional.query.get(service.service_professional_id)
+    if professional.blocked==True or professional.approved==False:
+        flash("Professional is not available at the moment")
+        return redirect(url_for('show_home'))
     print(service.id)
     reviews=Review.query.filter_by(service_id=id).all()
     print(reviews)
     return render_template("book_professional.html",service=service,professional=professional,reviews=reviews)
+
+@app.route('/ViewUser/<int:id>')
+@login_required
+@admin_required
+def show_user(id):
+    print("User page requested")
+    user=User.query.get(id)
+    reviews=Review.query.filter_by(user_id=id).all()
+    service_requests=ServiceRequest.query.filter_by(user_id=id).all()
+    transactions=Transaction.query.filter_by(user_id=id).all()
+    return render_template("view_user.html",user=user)
+
+@app.route('/User/<int:id>/block')
+@login_required
+@admin_required
+def block_user(id):
+    print("Block user requested")
+    user=User.query.get(id)
+    user.blocked=True
+    db.session.commit()
+    flash("User blocked successfully")
+    return redirect(url_for('show_admin'))
+
+@app.route('/User/<int:id>/unblock')
+@login_required
+@admin_required
+def unblock_user(id):
+    print("Unblock user requested")
+    user=User.query.get(id)
+    user.blocked=False
+    db.session.commit()
+    flash("User unblocked successfully")
+    return redirect(url_for('show_admin'))
 
 @app.route('/book/<int:id>')
 @login_required
 @user_required
 def show_book(id):
     print("Book page requested")
+    user=User.query.filter_by(username=session['user']).first()
     service=Service.query.get(id)
     professional=ServiceProfessional.query.get(service.service_professional_id)
+    if professional.blocked==True or professional.approved==False:
+        flash("Professional is not available at the moment")
+        return redirect(url_for('show_home'))
+    if user.blocked==True:
+        flash("You are blocked, please contact admin")
+        return redirect(url_for('show_home'))
     return render_template("book.html",service=service,professional=professional)
 
 @app.route('/book/<int:id>',methods=['POST'])
@@ -237,7 +280,8 @@ def handle_register_professional():
     service_description = request.form.get('service_description')
     service_price = request.form.get('service_price')
     service_duration = request.form.get('service_duration')
-    if username=="" or password=="" or name=="" or email=="" or confirm_password==""  or description=="" or experience=="" or service_name=="" or service_description=="" or service_price=="" or service_duration=="" :    
+    service_area_pincode = request.form.get('service_area_pincode')
+    if username=="" or password=="" or name=="" or email=="" or confirm_password==""  or description=="" or experience=="" or service_name=="" or service_description=="" or service_price=="" or service_duration=="" or service_area_pincode=="": 
         flash("Please enter all the fields")
         return redirect(url_for('show_register_professional'))
     db_username=User.query.filter_by(username=username).first()
@@ -251,15 +295,54 @@ def handle_register_professional():
     if  db_email or ServiceProfessional.query.filter_by(email=email).first():
         flash("Email already exists")
         return redirect(url_for('show_register_professional')) 
+    category_base_price=Category.query.filter_by(id=category).first().base_price
+    if float(service_price)<category_base_price:
+        flash("Service price cannot be less than category base price")
+        return redirect(url_for('show_register_professional'))
+    if len(service_area_pincode) != 6:
+        flash("Please enter a valid pincode")
     passhash=generate_password_hash(password)
-    professional = ServiceProfessional(username=username, passhash=passhash, name=name, email=email, category=category, description=description, experience=experience)
+    professional = ServiceProfessional(username=username, passhash=passhash, name=name, email=email, category=category, description=description, experience=experience,approved=False,blocked=False)
     db.session.add(professional)
     db.session.commit()
-    service=Service(name=service_name,description=service_description,price=service_price,time=service_duration,category_id=category,service_professional_id=professional.id)
+    service=Service(name=service_name,description=service_description,price=service_price,time=service_duration,category_id=category,service_professional_id=professional.id,area_pincode=service_area_pincode)
     db.session.add(service)
     db.session.commit()
     flash("Professional registered successfully")
     return redirect(url_for('show_login'))
+
+@app.route('/professional/<int:id>/approve')
+@login_required
+@admin_required
+def approve_professional(id):
+    print("Approve professional requested")
+    professional=ServiceProfessional.query.get(id)
+    professional.approved=True
+    db.session.commit()
+    flash("Professional approved successfully")
+    return redirect(url_for('show_admin'))
+
+@app.route('/professional/<int:id>/block')
+@login_required
+@admin_required
+def block_professional(id):
+    print("Block professional requested")
+    professional=ServiceProfessional.query.get(id)
+    professional.blocked=True
+    db.session.commit()
+    flash("Professional blocked successfully")
+    return redirect(url_for('show_admin'))
+
+@app.route('/professional/<int:id>/unblock')
+@login_required
+@admin_required
+def unblock_professional(id):
+    print("Unblock professional requested")
+    professional=ServiceProfessional.query.get(id)
+    professional.blocked=False
+    db.session.commit()
+    flash("Professional unblocked successfully")
+    return redirect(url_for('show_admin'))
 
 @app.route("/profile")
 def show_profile():
@@ -329,6 +412,7 @@ def handle_profile():
         service_description = request.form.get('service_description')
         service_price = request.form.get('service_price')
         service_duration = request.form.get('service_duration')
+        service_area_pincode = request.form.get('service_area_pincode')
         if name=="" or username==""  or current_password=="" or description=="" or experience=="":
             flash("Please enter all the fields")
             return redirect(url_for('show_profile'))
@@ -348,14 +432,19 @@ def handle_profile():
         if service_name=="" or service_description=="" or service_price=="" or service_duration=="":
             flash("Please enter all the fields also for service")
             return redirect(url_for('show_profile'))
+        
+
+        
         if service_name!=service.name:
             service.name=service_name
         if service_description!=service.description:
             service.description=service_description
-        if service_price!=service.price:
+        if service_price!=service.price and float(service_price)>=Category.query.filter_by(id=category).first().base_price:
             service.price=service_price
         if service_duration!=service.time:
             service.time=service_duration
+        if service_area_pincode!=service.area_pincode and len(service_area_pincode)==6:
+            service.area_pincode=service_area_pincode
         
         new_passhash=generate_password_hash(new_password)
         if user.name!=name:
@@ -418,6 +507,7 @@ def handle_dashboard_professional(id):
             service_request.status=updated_status
             transaction.status="completed"
             service_request.payment_status="released"
+            service_request.completed_at=datetime.now()
             db.session.commit()
             flash("Service request completed")
             return redirect(url_for('show_dashboard_professional'))
@@ -425,7 +515,7 @@ def handle_dashboard_professional(id):
         return redirect(url_for('show_dashboard_professional'))
     if updated_status=="canceled" and service_request.status=="pending":
         service_request.status=updated_status
-        transaction.status="failed"
+        transaction.status="refunded"
         service_request.payment_status="refunded"
         db.session.commit()
         flash("Service request canceled")
@@ -449,7 +539,9 @@ def show_admin():
     categories=Category.query.all()
     professionals=ServiceProfessional.query.all()
     service_requests=ServiceRequest.query.all()
-    return render_template("dashboard/admin.html",categories=categories,professionals=professionals,service_requests=service_requests)
+    # all user other than admin
+    users=User.query.filter(User.username!="admin").all()
+    return render_template("dashboard/admin.html",categories=categories,professionals=professionals,service_requests=service_requests,users=users)
 
 @app.route('/category/add')
 @login_required
@@ -464,10 +556,15 @@ def show_add_category():
 def handle_add_category():
     print("Add category form submitted")
     name = request.form.get('name')
+    base_price = request.form.get('base_price')
     if name=="":
         flash("Please enter category name")
         return redirect(url_for('show_add_category'))
-    category = Category(name=name)
+    if base_price=="":
+        flash("Please enter base price")
+        return redirect(url_for('show_add_category'))
+    base_price=float(base_price)
+    category = Category(name=name,base_price=base_price)
     db.session.add(category)
     db.session.commit()
     flash("Category added successfully")
@@ -498,14 +595,18 @@ def show_edit_category(id):
 def handle_edit_category(id):
     print("Edit category form submitted")
     name = request.form.get('name')
-    if name=="":
-        flash("Please enter category name")
+    base_price = request.form.get('base_price')
+    if name=="" or base_price=="":
+        flash("Please enter all the fields")
         return redirect(url_for('show_edit_category',id=id))
     category = Category.query.get(id)
-    if category.name==name:
+    if category.name==name and category.base_price==float(base_price):
         flash("No changes made")
+        return redirect(url_for('show_edit_category',id=id))
     if category.name!=name:
        category.name=name
+    if category.base_price!=float(base_price):
+         category.base_price=float(base_price)
     db.session.commit()
     flash("Category updated successfully")
     return redirect(url_for('show_admin'))
@@ -516,10 +617,15 @@ def handle_edit_category(id):
 def delete_category(id):
     print("Delete category requested")
     category = Category.query.get(id)
-    db.session.delete(category)
-    db.session.commit()
-    flash("Category deleted successfully")
-    return redirect(url_for('show_admin'))
+    services=Service.query.filter_by(category_id=id).all()
+    if services:
+        flash("Category cannot be deleted as it has services")
+        return redirect(url_for('show_admin'))
+    else:    
+        db.session.delete(category)
+        db.session.commit()
+        flash("Category deleted successfully")
+        return redirect(url_for('show_admin'))
 
 @app.route('/professional/<int:id>')
 @login_required
@@ -553,32 +659,6 @@ def show_service_request(id):
     print("Service request page requested")
     service_request=ServiceRequest.query.get(id)
     return render_template("service_request/show.html",service_request=service_request)
-
-@app.route('/service_request/<int:id>/edit')
-@login_required
-@admin_required
-def show_edit_service_request(id):
-    print("Edit service request page requested")
-    service_request=ServiceRequest.query.get(id)
-    return render_template("service_request/edit.html",service_request=service_request)
-
-@app.route('/service_request/<int:id>/edit', methods=['POST'])
-@login_required
-@admin_required
-def handle_edit_service_request(id):
-    print("Edit service request form submitted")
-    status = request.form.get('status')
-    service_request = ServiceRequest.query.get(id)
-    if status=="":
-        flash("Please enter status")
-        return redirect(url_for('show_edit_service_request',id=id))
-    if service_request.status==status:
-        flash("No changes made")
-    if service_request.status!=status:
-       service_request.status=status
-    db.session.commit()
-    flash("Service request updated successfully")
-    return redirect(url_for('show_admin'))
 
 @app.route('/service_request/<int:id>/delete')
 @login_required
@@ -670,5 +750,43 @@ def handle_review(id):
     flash("Review added successfully")
     return redirect(url_for('show_home'))
 
+# @app.route('/Analytics/user')
+# @login_required
+# @admin_required
+# def show_analytics_user():
+#     print("User analytics page requested")
+#     users=User.query.all()
+#     return render_template("analytics/user.html",users=users)
 
+# @app.route('/Analytics/professional')
+# @login_required
+# @admin_required
+# def show_analytics_professional():
+#     print("Professional analytics page requested")
+#     professionals=ServiceProfessional.query.all()
+#     return render_template("analytics/professional.html",professionals=professionals)
+
+# @app.route('/Analytics/service_request')
+# @login_required
+# @admin_required
+# def show_analytics_service_request():
+#     print("Service request analytics page requested")
+#     service_requests=ServiceRequest.query.all()
+#     return render_template("analytics/service_request.html",service_requests=service_requests)
+
+# @app.route('/Analytics/category')
+# @login_required
+# @admin_required
+# def show_analytics_category():
+#     print("Category analytics page requested")
+#     categories=Category.query.all()
+#     return render_template("analytics/category.html",categories=categories)
+
+@app.route('/search')
+def search():
+    print("Search page requested")
+    search=request.args.get('search')
+    category=Category.query.all()
+    services=Service.query.filter(Service.name.like('%'+search+'%')).all()
+    return render_template("search.html",services=services,category=category)
 

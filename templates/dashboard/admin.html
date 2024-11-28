@@ -6,52 +6,67 @@
     <div class="container">
         <h1 class="display-4 text-center text-dark">Dashboard</h1>
         <div class="mt-4">
-            <div class="card mb-4 border border-black">
+            <!-- <div class="card mb-4 border border-black">
                 <div class="card-header border-bottom border-black">
                     <h2>View Analytics</h2>
                 </div>
                 <div class="card-body bg-warning">
-                    <div class="row">
+                    <div class="row mb-8">
                         <div class="col-12">
-                            <a href="{{url_for('show_register_professional')}}" class="btn btn-primary border border-black mx-2">Categories</a>
-                            <a href="{{url_for('show_register_professional')}}" class="btn btn-primary border border-black mx-2">Professionals</a>
-                            <a href="{{url_for('show_register_professional')}}" class="btn btn-primary border border-black mx-2">Service Requests</a>
+                            <div class="bg-light p-3 border border-black rounded d-flex justify-content-center">
+                                <a href="{{ url_for('show_profile') }}" class="btn btn-primary border-black mx-2 px-4 py-2 text-white shadow-sm hover-shadow">
+                                    Categories
+                                </a>
+                                <a href="{{ url_for('show_profile') }}" class="btn btn-primary border-black mx-2 px-4 py-2 text-white shadow-sm hover-shadow">
+                                    Professionals
+                                </a>
+                                <a href="{{ url_for('show_profile') }}" class="btn btn-primary border-black mx-2 px-4 py-2 text-white shadow-sm hover-shadow">
+                                    Service Requests
+                                </a>
+                                <a href="{{ url_for('show_profile') }}" class="btn btn-primary border-black mx-2 px-4 py-2 text-white shadow-sm hover-shadow">
+                                    Users
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>                
-            </div>
+            </div> -->
             <div class="card mb-4 border border-black">
                 <div class="card-header border-bottom border-black">
-                    <h2>Categories Preview</h2>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2>Categories Preview</h2>
+                        
+                    </div>
                 </div>
                 <div class="card-body bg-warning">
-                    <div class="card-body text-left">
-                        <a href="{{url_for('handle_add_category')}}" class="btn btn-success border border-black"><i class="fa fa-plus
-                            " aria-hidden="true"></i> Add</a>
-                    </div>
-                    <table class="table table-striped table-hover border border-black">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Total Services</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for category in categories %}
-                            <tr>
-                                <td>{{ category.id }}</td>
-                                <td>{{ category.name }}</td>
-                                <td>{{ category.services|length }}</td>
-                                <td >
-                                 <a href="{{url_for('show_category', id=category.id)}}" class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
-                                 <a href="{{url_for('show_edit_category', id=category.id)}}" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-                                 <a href="{{url_for('delete_category', id=category.id)}}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <a href="{{url_for('handle_add_category')}}" class="btn btn-success border border-black mb-2"><i class="fa fa-plus
+                        " aria-hidden="true"></i> Add</a>
+                        <table class="table table-striped table-hover border border-black">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Base Price</th>
+                                    <th>Total Services</th>
+                                    <th width="22%">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for category in categories %}
+                                <tr>
+                                    <td>{{ category.id }}</td>
+                                    <td>{{ category.name }}</td>
+                                    <td>{{ category.base_price }}</td>
+                                    <td>{{ category.services|length }}</td>
+                                    <td >
+                                    <a href="{{url_for('show_category', id=category.id)}}" class="btn btn-primary border-black border"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
+                                    <a href="{{url_for('show_edit_category', id=category.id)}}" class="btn btn-primary border-black border"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                                    <a href="{{url_for('delete_category', id=category.id)}}" class="btn btn-danger border-black border"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                 </div>
             </div>
             <div class="card mb-4 border border-black">
@@ -63,26 +78,38 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
                                 <th>Username</th>
+                                <th>Name</th>
                                 <th>Email</th>
                                 <th>Category</th>
                                 <th>Service</th>
-                                <th>Actions</th>
+                                <th width="22%">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for professional in professionals %}
                             <tr>
                                 <td>{{ professional.id }}</td>
-                                <td>{{ professional.name }}</td>
                                 <td>{{ professional.username }}</td>
+                                <td>{{ professional.name }}</td>
                                 <td>{{ professional.email }}</td>
                                 <td>{{ professional.category }}</td>
                                 <td>{{ professional.service.name}}</td>
                                 <td>
-                                    <a href="{{url_for('show_professional', id=professional.id)}}" class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
-                                    <a href="{{url_for('delete_professional', id=professional.id)}}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                    
+                                    <a href="{{url_for('show_professional', id=professional.id)}}" class="btn btn-primary border-black border"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
+                                    {% if professional.approved == False %}
+                                    <a href="{{url_for('approve_professional', id=professional.id)}}" class="btn btn-success border-black border"><i class="fa fa-check" aria-hidden="true"></i> Approve</a>
+                                    {% endif %}
+                                    {% if professional.approved == True %}
+                                        {% if professional.blocked == False %}
+                                            <a href="{{url_for('block_professional', id=professional.id)}}" class="btn btn-danger border-black border"><i class="fa fa-ban" aria-hidden="true"></i> Block</a>
+                                        {% else %}
+                                            <a href="{{url_for('unblock_professional', id=professional.id)}}" class="btn btn-success border-black border"><i class="fa fa-unlock" aria-hidden="true"></i> Unblock</a>
+                                        {% endif %}
+                                    {% endif %}
+                                    
+
                                 </td>
                             </tr>
                             {% endfor %}
@@ -90,6 +117,49 @@
                     </table>
                 </div>
             </div>
+
+            <div class="card mb-4 border border-black">
+                <div class="card-header border-bottom border-black">
+                    <h2>Users Preview</h2>
+                </div>
+                <div class="card-body bg-warning">
+                    <table class="table table-striped table-hover border border-black">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>User Service Requests</th>
+                                <th>User Reviews</th>
+                                <th width="22%">Actions</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username}}</td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email}}</td>
+                                <td>{{ user.service_requests|length }}</td>
+                                <td>{{ user.reviews|length}}</td>
+                                <td >
+                                    <a href="{{url_for('show_user', id=user.id)}}" class="btn btn-primary border border-black"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
+                                    {% if user.blocked == False %}
+                                        <a href="{{url_for('block_user', id=user.id)}}" class="btn btn-danger border-black border"><i class="fa fa-ban" aria-hidden="true"></i> Block</a>
+                                    {% else %}
+                                        <a href="{{url_for('unblock_user', id=user.id)}}" class="btn btn-success border-black border"><i class="fa fa-unlock" aria-hidden="true"></i> Unblock</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="card mb-4 border border-black">
                 <div class="card-header border-bottom border-black">
                     <h2>Service Requests Preview</h2>
@@ -106,7 +176,7 @@
                                 <th>Created</th>
                                 <th>Status</th>
                                 <th>Payment Status</th>
-                                <th>Actions</th>
+                                <th >Actions</th>
 
                             </tr>
                         </thead>
@@ -119,7 +189,7 @@
                                 <td>{{ request.user.name }}</td>
                                 <td>{{ request.appointment }}</td>
                                 <td>{{ request.created_at }}</td>
-                                    <td><span class="badge py-2 px-2
+                                    <td><span class="badge py-2 px-2 border-black border
                                         {% if request.status == 'pending' %}text-bg-warning{% endif %}
                                         {% if request.status == 'approved' %}text-bg-success{% endif %}
                                         {% if request.status == 'completed' %}text-bg-primary{% endif %}
@@ -128,7 +198,7 @@
                                         {{ request.status }}
                                     </span>
                                 </td>
-                                <td><span class="badge py-2 px-2
+                                <td><span class="badge py-2 px-2 border-black border
                                         {% if request.payment_status == 'pending' %}text-bg-warning{% endif %}
                                         {% if request.payment_status == 'released' %}text-bg-success{% endif %}
                                         {% if request.payment_status == 'refunded' %}text-bg-primary{% endif %}
@@ -136,10 +206,8 @@
                                         {{ request.payment_status }}
                                     </span>
                                 </td>
-                                <td class="d-flex gap-2">
-                                    <a href="{{url_for('show_service_request', id=request.id)}}" class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
-                                    <a href="{{url_for('show_edit_service_request', id=request.id)}}" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-                                    <a href="{{url_for('delete_service_request', id=request.id)}}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                                <td >
+                                    <a href="{{url_for('show_service_request', id=request.id)}}" class="btn btn-primary border border-black"><i class="fa fa-eye" aria-hidden="true"></i> View</a>
                                 </td>
                             </tr>
                             {% endfor %}

@@ -3,20 +3,38 @@
     Edit Category
 {% endblock %}
 {% block content %}
-    <div class="container d-flex justify-content-center align-items-center ">
-        <div class="card" style="width: 50rem">
-            <div class="card-body">
-                <h1 class="display-4 text-dark text-center ">Edit Category</h1>
-                <form class="text-dark py-4" method="post">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name:<span style="color: red;">*</span></label> 
-                    <input type="text" class="form-control" id="name" required name="name" value="{{ category.name }}">
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card border border-black mt-5" style="width: 50rem;">
+        <div class="card-header border-bottom border-dark">
+            <h1 class="text-dark text-center">Edit Category</h1>
+        </div>
+        <div class="card-body bg-warning">
+            <!-- Inner Card for Category Name -->
+            <div class="card border border-black mb-3">
+                <div class="card-header bg-light border-bottom border-dark">
+                    <h3 class="fs-5 text-center">Category Information</h3>
                 </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="card-body">
+                    <form class="text-dark py-4" method="post">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">
+                                Name: <span style="color: red;">*</span>
+                            </label>
+                            <input type="text" class="form-control border border-black" id="name" required name="name" value="{{ category.name }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="base_price" class="form-label">
+                                Base Price (Rs.): <span style="color: red;">*</span>
+                            </label>
+                            <input type="number" class="form-control border border-black" id="base_price" required name="base_price" value="{{ category.base_price }}">
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button type="submit" class="btn btn-primary border border-black">Submit</button>
+                        </div>
+                    </form>
                 </div>
-                </form>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

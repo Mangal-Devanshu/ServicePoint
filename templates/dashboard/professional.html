@@ -5,6 +5,16 @@
 {% block content %}
     <div class="container">
         <h1 class="display-4 text-center text-dark">Dashboard</h1>
+        {% if professional.blocked %}
+            <div class="alert alert-danger" role="alert">
+                Your account has been blocked. Please contact the administrator.
+            </div>
+        {% endif %}
+        {% if professional.approved == False %}
+            <div class="alert alert-warning" role="alert">
+                Your account is pending approval. Please wait for the administrator to approve your account.
+            </div>
+        {% endif %}
         <div class="mt-4">
             <div class="card mb-4 border border-black">
                 <div class="card-header border-bottom border-black">

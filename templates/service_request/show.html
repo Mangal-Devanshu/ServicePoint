@@ -1,0 +1,127 @@
+{% extends 'layout.html'%}
+{% block title %}
+    Service Request Details
+{% endblock %}
+{% block content %}
+        <div class="container">
+
+            <div class="card border border-black mx-auto mt-5" style="width: 80rem;">
+                <div class="card-header border-bottom border-dark">
+                <h2 class="fs-3 text-center">Service Request Details</h2>
+                </div>
+                <div class="card-body bg-warning">
+            
+                <div class="card border border-black mb-3">
+                    <div class="card-header bg-light border-bottom border-dark">
+                    <h3 class="fs-5 text-center">Service Request Information</h3>
+                    </div>
+                    <div class="card-body">
+                    <table class="table table-bordered border border-black">
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">ID</td>
+                            <td style="width: 75%;">{{ service_request.id }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Service Name</td>
+                            <td style="width: 75%;">{{ service_request.service.name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Service Description</td>
+                            <td style="width: 75%;">{{ service_request.service.description }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Service Category</td>
+                            <td style="width: 75%;">{{ service_request.service.category.name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Service Category Base Price (Rs.)</td>
+                            <td style="width: 75%;">{{ service_request.service.category.base_price }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Service Professional Name</td>
+                            <td style="width: 75%;">{{ service_request.service.service_professional.name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Service Professional Email</td>
+                            <td style="width: 75%;">{{ service_request.service.service_professional.email }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Customer Name</td>
+                            <td style="width: 75%;">{{ service_request.user.name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Customer Email</td>
+                            <td style="width: 75%;">{{ service_request.user.email }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Customer Address (Location)</td>
+                            <td style="width: 75%;">{{ service_request.address }}</td>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Scheduled Appointment</td>
+                            <td style="width: 75%;">{{ service_request.appointment }}</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Service Duration (Hr)</td>
+                            <td style="width: 75%;">{{ service_request.service.time }}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Service Price (Rs.)</td>
+                            <td style="width: 75%;">{{ service_request.service.price }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Status</td>
+                            <td style="width: 75%;"><span class="badge py-2 px-2 border-black border
+                                {% if service_request.status == 'pending' %}text-bg-warning{% endif %}
+                                {% if service_request.status == 'approved' %}text-bg-success{% endif %}
+                                {% if service_request.status == 'completed' %}text-bg-primary{% endif %}
+                                {% if service_request.status == 'canceled' %}text-bg-danger{% endif %}
+                                ">
+                                {{ service_request.status }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Payment Status</td>
+                            <td style="width: 75%;">
+                                <span class="badge py-2 px-2 border-black border
+                                            {% if service_request.payment_status == 'pending' %}text-bg-warning{% endif %}
+                                            {% if service_request.payment_status == 'released' %}text-bg-success{% endif %}
+                                            {% if service_request.payment_status == 'refunded' %}text-bg-primary{% endif %}
+                                            {% if service_request.payment_status == 'held' %}text-bg-danger{% endif %}">
+                                            {{ service_request.payment_status }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Transaction ID</td>
+                            <td style="width: 75%;">{{ service_request.transactions.id }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Transaction Status</td>
+                            <td style="width: 75%;">
+                                <span class="badge py-2 px-2 border-black border
+                                        {% if service_request.transactions.status == 'pending' %}text-bg-warning{% endif %}
+                                        {% if service_request.transactions.status == 'refunded' %}text-bg-primary{% endif %}
+                                        {% if service_request.transactions.status == 'completed' %}text-bg-success{% endif %}
+                                        {% if service_request.transactions.status == 'failed' %}text-bg-danger{% endif %}
+                                        ">
+                                        {{ service_request.transactions.status }}
+                                </span> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Created At</td>
+                            <td style="width: 75%;">{{ service_request.created_at }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold" style="width: 25%;">Completed At</td>
+                            <td style="width: 75%;">{{ service_request.completed_at }}</td>
+                    </table>
+                </div>
+            </div>
+        </div>
+{% endblock %}        
+
+
