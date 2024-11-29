@@ -1,18 +1,28 @@
-<div class="container">
-    <div class="card border border-black mx-auto mt-5 shadow-lg" style="max-width: 40rem;">
-        <div class="card-header border-bottom border-dark bg-light">
-            <h2 class="fs-4 text-center text-dark">Search</h2>
-        </div>
-        <div class="card-body bg-warning">
-            <form action="{{ url_for('search') }}" method="POST" class="p-3">
-                <div class="mb-4">
-                    <label for="search" class="form-label fs-5 text-dark">Search:</label>
-                    <input type="text" class="form-control border border-black shadow-sm" id="search" name="search" placeholder="Enter search term..." required>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card border border-black shadow-sm">
+                <div class="card-body bg-warning p-1">
+                    <form class="form-inline d-flex justify-content-between" method="GET" action="{{ url_for('search') }}">
+                        <div class="input-group" style="width: 37%;">
+                            <select class="form-select form-select-sm border border-black shadow-sm" name="parameter"  id="parameter">
+                                <option value="search_pincode">Search Pincode</option>
+                                <option value="search_category"> Category</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="width: 63%;">
+                            <input 
+                                type="text" 
+                                class="form-control form-control-sm border border-black shadow-sm" 
+                                placeholder="Enter parameter" 
+                                name="search_parameter" 
+                                required 
+                            >
+                            <button class="btn btn-primary btn-sm border border-black shadow-sm" type="submit">Search</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary px-5 py-2 border border-black shadow-sm">Search</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

@@ -61,8 +61,8 @@
                                                 </span>
                                             </div>
                                         </td>
-                                        <td style="width: 23%;">
-                                            <div class="d-flex align-items-center gap-2">
+                                        <td style="width: 25%;">
+                                            <div class="d-flex align-items-center gap-1">
                                                 <form method="POST" action="{{ url_for('show_otp', id=service_request.id) }}" class="d-flex align-items-center">
                                                     <label for="password" class="me-2">Password:</label>
                                                     <input type="password" id="password" name="password" class="form-control form-control-sm me-2" placeholder="Enter password" required>
@@ -70,8 +70,18 @@
                                                 </form>
                                             </div>  
                                         </td>
-                                        <td>
-                                            <a href="{{ url_for('add_review', id=service_request.service.id) }}" class="btn btn-primary border border-black" style="width: 125px;">Add Review</a>
+                                        <td class="d-flex align-items-center gap-2 mx-auto" style="height: 4.1rem;">
+                                            {% if service_request.status == 'completed' %}
+                                                    <a href="{{ url_for('add_review', id=service_request.service.id) }}" class="btn btn-primary border border-black" style="width: 125px; height:38px">Add Review</a>    
+                                            
+                                                {% for review in reviews %}
+                                                    {% if review.service_id == service_request.service.id %}
+                                                        <a href="{{ url_for('delete_review', id=review.id) }}" class="btn btn-danger btn-sm border border-black">Delete</a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% else %}
+                                                <p class="px-2 mt-3">Review will be available after completion</p>
+                                            {% endif %}
                                         </td>
                                     </tr>
 

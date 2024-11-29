@@ -60,7 +60,7 @@ def show_home():
     category=Category.query.all()
     user=User.query.filter_by(username=session['user']).first()
     service=Service.query.all()
-    return render_template("home.html",user=user,category=category)
+    return render_template("home.html",user=user,category=category,pincode_searched=False)
 
 @app.route('/ViewProfessional/<int:id>')
 @login_required
@@ -162,7 +162,7 @@ def show_logout():
     print("Logout requested")
     session.clear()
     flash("Logged out successfully")
-    return redirect(url_for('show_home'))
+    return redirect(url_for('show_login'))
 
 @app.route('/login')
 def show_login():
@@ -472,7 +472,8 @@ def show_dashboard_user():
     user=User.query.filter_by(username=session['user']).first()
     service_requests=ServiceRequest.query.filter_by(user_id=user.id).all()
     transaction=Transaction.query.filter_by(user_id=user.id).all()
-    return render_template("dashboard/user.html",user=user,service_requests=service_requests,transactions=transaction)
+    user_reviews=Review.query.filter_by(user_id=user.id).all()
+    return render_template("dashboard/user.html",user=user,service_requests=service_requests,transactions=transaction,reviews=user_reviews)
     
 @app.route('/dashboard/professional')
 @login_required
@@ -729,6 +730,13 @@ def handle_payment(id,service_request_id):
 @user_required
 def add_review(id):
     print("Review page requested")
+    if Review.query.filter_by(user_id=User.query.filter_by(username=session['user']).first().id,service_id=id).first():
+        flash("You have already reviewed this service")
+        return redirect(url_for('show_dashboard_user'))
+    user=User.query.filter_by(username=session['user']).first()
+    if user.blocked==True:
+        flash("You are blocked, please contact admin")
+        return redirect(url_for('show_dashboard_user'))
     service=Service.query.get(id)
     return render_template("review.html",service=service)
 
@@ -748,7 +756,18 @@ def handle_review(id):
     db.session.add(review)
     db.session.commit()
     flash("Review added successfully")
-    return redirect(url_for('show_home'))
+    return redirect(url_for('show_dashboard_user'))
+
+@app.route('/review/<int:id>/delete')
+@login_required
+@user_required
+def delete_review(id):
+    print("Delete review requested")
+    review = Review.query.get(id)
+    db.session.delete(review)
+    db.session.commit()
+    flash("Review deleted successfully")
+    return redirect(url_for('show_dashboard_user'))
 
 # @app.route('/Analytics/user')
 # @login_required
@@ -782,11 +801,22 @@ def handle_review(id):
 #     categories=Category.query.all()
 #     return render_template("analytics/category.html",categories=categories)
 
-@app.route('/search')
+@app.route('/search/pincode')
 def search():
     print("Search page requested")
-    search=request.args.get('search')
     category=Category.query.all()
-    services=Service.query.filter(Service.name.like('%'+search+'%')).all()
-    return render_template("search.html",services=services,category=category)
+    parameter=request.args.get('parameter')
+    search_parameter=request.args.get('search_parameter')
+    category=Category.query.all()
+    pincode_searched=False
+    if search_parameter:
+        pincode_searched=True
+    if parameter=="search_category" and search_parameter:
+        category=Category.query.filter_by(name=search_parameter).all()
+        return render_template("home.html",category=category,pincode_searched=False)
+    if parameter=="search_pincode" and search_parameter:
+        search_pincode_list=Service.query.filter_by(area_pincode=search_parameter).all()
+        return render_template("home.html",category=category,search_pincode_list=search_pincode_list,pincode_searched=pincode_searched)
+   
+
 
