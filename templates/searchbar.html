@@ -1,16 +1,16 @@
 <div class="container mt-4">
     <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card border border-black shadow-sm">
                 <div class="card-body bg-warning p-1">
                     <form class="form-inline d-flex justify-content-between" method="GET" action="{{ url_for('search') }}">
-                        <div class="input-group" style="width: 37%;">
+                        <div class="input-group" style="width: 32%;">
                             <select class="form-select form-select-sm border border-black shadow-sm" name="parameter"  id="parameter">
                                 <option value="search_pincode">Search Pincode</option>
                                 <option value="search_category"> Category</option>
                             </select>
                         </div>
-                        <div class="input-group" style="width: 63%;">
+                        <div class="input-group" style="width: 68%;">
                             <input 
                                 type="text" 
                                 class="form-control form-control-sm border border-black shadow-sm" 
