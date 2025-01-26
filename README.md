@@ -48,7 +48,7 @@ The following technologies were used to develop the application:
 
 ### Presentation Video
 A detailed presentation video for the project can be found at the following link:  
-[[Link to Presentation Video](#)](https://drive.google.com/file/d/1KwJ1r3qb9aBA-N61OGM8l8PY-uecJ14B/view)
+[Watch Presentation Video](https://drive.google.com/file/d/1KwJ1r3qb9aBA-N61OGM8l8PY-uecJ14B/view)
 
 ---
 
